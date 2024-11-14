@@ -16,9 +16,9 @@ jobs:
     - name: build
       id: android-build
       uses: ./.github/actions/android-build
-      continue-on-error: true
 
     - name: get date
+      if: always()
       id: get-date
       run: |
         echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
@@ -32,6 +32,14 @@ jobs:
         s3_id: ${{ secrets.AWS_S3_ACCESS_KEY_ID }}
         s3_key: ${{ secrets.AWS_S3_SECRET_ACCESS_KEY }}
         s3_option: --recursive
+
+    - name: Release daily build log to release.nnstreamer.com
+      uses: ./.github/actions/s3_upload
+      with:
+        source: ${{ github.workspace }}/android_build.log
+        dest: logs/android_build_log.txt
+        s3_id: ${{ secrets.AWS_S3_ACCESS_KEY_ID }}
+        s3_key: ${{ secrets.AWS_S3_SECRET_ACCESS_KEY }}
 
     - name: Generate badge
       run: |
