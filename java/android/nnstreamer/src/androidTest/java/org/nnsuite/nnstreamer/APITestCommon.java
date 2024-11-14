@@ -32,7 +32,7 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class APITestCommon {
     private static boolean mInitialized = false;
-    private static String mRootDirectory = null;
+    private static String mRootDirectoryFailureCase = null;
 
     public static String getRootDirectory() {
         return mInitialized ? mRootDirectory : null;
